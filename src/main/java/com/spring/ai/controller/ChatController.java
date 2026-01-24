@@ -33,5 +33,9 @@ public class ChatController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
+    @GetMapping("/create-todo-with-rules")
+    public ResponseEntity<String> getMyPlanListWithRoles(@RequestParam String message){
+        String response = chatService.getMyPlanListWithRole(message);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }
