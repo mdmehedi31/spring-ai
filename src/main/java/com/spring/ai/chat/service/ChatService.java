@@ -1,6 +1,7 @@
 package com.spring.ai.chat.service;
 
 import com.spring.ai.dto.TodoDTO;
+import com.spring.ai.dto.TodoListDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
@@ -51,6 +52,13 @@ public class ChatService {
         return  chatClient.prompt(prompt).call().chatResponse().getResult().getOutput().getText();
     }
 
+    public List<TodoListDTO> getTodoListByListJsonFormat(String message) {
+        String promptValue = "Create a todo list on this topics {message} ";
+        PromptTemplate template = new PromptTemplate(promptValue);
+        Prompt prompt = template.create(Map.of("message",message));
+        return chatClient.prompt(prompt).call().entity(new ParameterizedTypeReference<List<TodoListDTO>>() {});
+
+    }
 
     public TodoDTO getTodoListByJsonFormat(String message) {
         String promptValue = "Create a todo list on this topics {message} " +

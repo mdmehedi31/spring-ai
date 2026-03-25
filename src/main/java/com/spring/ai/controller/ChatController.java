@@ -3,6 +3,7 @@ package com.spring.ai.controller;
 
 import com.spring.ai.chat.service.ChatService;
 import com.spring.ai.dto.TodoDTO;
+import com.spring.ai.dto.TodoListDTO;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("chat")
@@ -50,5 +53,11 @@ public class ChatController {
     public ResponseEntity<TodoDTO> getJsonFormatTodoList(@RequestParam String message){
         TodoDTO response = chatService.getTodoListByJsonFormat(message);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/generate-list-json-format")
+    public ResponseEntity<List<TodoListDTO>> getJsonFormatList(@RequestParam String message){
+        List<TodoListDTO> responseList= chatService.getTodoListByListJsonFormat(message);
+        return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
 }
