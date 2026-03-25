@@ -59,4 +59,22 @@ public class ChatService {
         Prompt prompt = new Prompt(List.of(userMessage, systemMessage));
         return  chatClient.prompt(prompt).call().chatResponse().getResult().getOutput().getText();
     }
+
+    public String getTodoPlanList(String message) {
+        String promptValue = "Create a todo list on this topics {message}";
+        String systemMessageValue="List should be serial and use ordering number like number of " +
+                "or any types of symbol, and give me html format without Markdown, all response should be in the html tag, " +
+                "I will use this for showing in my application";
+
+        PromptTemplate promptTemplate = new PromptTemplate(promptValue);
+        Prompt prompt = promptTemplate.create(Map.of("message",message));
+        SystemMessage systemMessage= new SystemMessage(systemMessageValue);
+
+        return chatClient.prompt(prompt).system(systemMessageValue).
+                call().chatResponse()
+                .getResult()
+                .getOutput()
+                .getText();
+    }
+
 }

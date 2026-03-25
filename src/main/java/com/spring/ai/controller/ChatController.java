@@ -20,7 +20,6 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-
     @GetMapping("/lets-talk")
     public ResponseEntity<String> letsTalk(@RequestParam String message){
         String response = chatService.letsTalk(message);
@@ -36,6 +35,12 @@ public class ChatController {
     @GetMapping("/create-todo-with-rules")
     public ResponseEntity<String> getMyPlanListWithRoles(@RequestParam String message){
         String response = chatService.getMyPlanListWithRole(message);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/generate-todo-list")
+    public ResponseEntity<String> generateTodoList(@RequestParam String message){
+        String response = chatService.getTodoPlanList(message);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
