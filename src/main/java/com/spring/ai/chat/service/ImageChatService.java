@@ -57,7 +57,7 @@ public class ImageChatService {
                 .call().content();
         return content;
     }
-
+// "model": "gpt-image-1.5",
     public String generateImageByText(String prompt){
 
         ImageResponse response = imageModel.call(
