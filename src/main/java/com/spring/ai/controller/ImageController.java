@@ -28,4 +28,10 @@ public class ImageController {
         String resposne =imageChatService.convertImageToText(file, message);
         return new ResponseEntity<>(resposne, HttpStatus.OK);
     }
+
+    @GetMapping("generate-text-to-image")
+    public ResponseEntity<String> generateImageByText(@RequestParam("prompt") String prompt){
+        String resposne =imageChatService.generateImageByText(prompt);
+        return new ResponseEntity<>(resposne, HttpStatus.OK);
+    }
 }

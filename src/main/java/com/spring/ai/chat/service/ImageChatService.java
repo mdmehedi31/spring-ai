@@ -3,6 +3,10 @@ package com.spring.ai.chat.service;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.image.ImageModel;
+import org.springframework.ai.image.ImagePrompt;
+import org.springframework.ai.image.ImageResponse;
+import org.springframework.ai.openai.OpenAiImageOptions;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeType;
@@ -13,9 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageChatService {
 
     private final ChatModel chatModel;
+    private final ImageModel imageModel;
 
-    public ImageChatService(ChatModel chatModel) {
+    public ImageChatService(ChatModel chatModel, ImageModel imageModel) {
         this.chatModel = chatModel;
+        this.imageModel = imageModel;
     }
 
 
@@ -50,5 +56,21 @@ public class ImageChatService {
                                 file.getResource()))
                 .call().content();
         return content;
+    }
+
+    public String generateImageByText(String prompt){
+
+        ImageResponse response = imageModel.call(
+                new ImagePrompt(prompt,
+                        OpenAiImageOptions.
+                                builder()
+                                .width(1792)
+                                .height(1024)
+                                .quality("hd")
+                                .N(1)
+                                .build())
+        );
+
+        return response.getResult().getOutput().getUrl();
     }
 }
