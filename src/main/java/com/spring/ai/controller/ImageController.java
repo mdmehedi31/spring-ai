@@ -5,10 +5,8 @@ import com.spring.ai.chat.service.ImageChatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/img-chat")
@@ -21,6 +19,13 @@ public class ImageController {
     @GetMapping("/convert-to-text")
     public ResponseEntity<String> convertImageToText(){
         String resposne =imageChatService.convertImageToText();
+        return new ResponseEntity<>(resposne, HttpStatus.OK);
+    }
+
+    @GetMapping("convert-file-to-text")
+    public ResponseEntity<String> convertImageToText(@RequestParam("file") MultipartFile file,
+                                                     @RequestParam("message") String message){
+        String resposne =imageChatService.convertImageToText(file, message);
         return new ResponseEntity<>(resposne, HttpStatus.OK);
     }
 }

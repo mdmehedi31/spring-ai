@@ -60,4 +60,6 @@ public class ChatController {
         List<TodoListDTO> responseList= chatService.getTodoListByListJsonFormat(message);
         return new ResponseEntity<>(responseList, HttpStatus.OK);
     }
+
+
 }
