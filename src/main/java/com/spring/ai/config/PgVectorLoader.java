@@ -1,9 +1,13 @@
 package com.spring.ai.config;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
 import org.springframework.ai.reader.pdf.config.PdfDocumentReaderConfig;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,15 +15,30 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.simple.JdbcClient;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Configuration
 public class PgVectorLoader {
 
     private VectorStore vectorStore;
     private JdbcClient jdbcClient;
-
+    private ChatClient chatClient;;
     @Value("classpath:/bdconstitutions.pdf")
     private Resource pdfResource;
-
+    private String prompt = """
+            Your task is to answer the questions about Indian Constitution. Use the information from the DOCUMENTS
+            section to provide accurate answers. If unsure or if the answer isn't found in the DOCUMENTS section, 
+            simply state that you don't know the answer.
+                        
+            QUESTION:
+            {input}
+                        
+            DOCUMENTS:
+            {documents}
+                      """;
 
     public PgVectorLoader(VectorStore vectorStore, JdbcClient jdbcClient) {
         this.vectorStore = vectorStore;
@@ -67,4 +86,6 @@ public class PgVectorLoader {
                 .replace("\u0000", "")
                 .replaceAll("[\\p{C}&&[^\n\t]]", "");
     }
+
+
 }

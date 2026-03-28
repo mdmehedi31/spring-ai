@@ -15,9 +15,17 @@ public class BGCController {
     @Autowired
     private BDConstitutionService bdConstitutionService;
 
+
+
     @RequestMapping("bgc/ask")
     public ResponseEntity<String> askAboutBdConstitution(@RequestParam("prompt") String prompt) {
         String response = this.bdConstitutionService.askToBgc(prompt);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping("get-bgc-info")
+    public ResponseEntity<String> getBgcInfo(@RequestParam("prompt") String prompt) {
+        String response = this.bdConstitutionService.simplfy(prompt);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
